@@ -1,6 +1,6 @@
 ## Tidy Data in Python
 
-In this repository you will find common examples of how to tidy data using Python pandas. It's an adapted work from [nickhould/tidy-data-python](https://github.com/nickhould/tidy-data-python)
+In this repository you will find common examples of how to tidy data using Python pandas and R Tidyverse.
 
 ### A few definitions
 - Variable: A measurement or an attribute. Height, weight, sex, etc.
