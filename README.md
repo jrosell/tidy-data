@@ -42,12 +42,13 @@ Through the following examples extracted from Wickham’s paper, we’ll wrangle
 - A single observational unit is stored in multiple tables.
 
 ### Python pandas
+
 See:
-pandas/column-headers-are-values-not-variable-names.py
-pandas/multiple-tables-on-one-table.py
-pandas/multiple-variables-stored-in-one-column.py
-pandas/variables-are-stored-in-both-rows-and-columns.py
-pandas/one-type-in-multiple-tables.py
+- pandas/column-headers-are-values-not-variable-names.py
+- pandas/multiple-tables-on-one-table.py
+- pandas/multiple-variables-stored-in-one-column.py
+- pandas/variables-are-stored-in-both-rows-and-columns.py
+- pandas/one-type-in-multiple-tables.py
 
 
 ### R Tidyverse
