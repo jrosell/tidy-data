@@ -1,4 +1,4 @@
-## Tidy Data in Python
+## Tidy Data in Python and R
 
 In this repository you will find common examples of how to tidy data using Python pandas and R Tidyverse.
 
