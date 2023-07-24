@@ -2,6 +2,23 @@
 
 In this repository you will find common examples of how to tidy data using Python pandas and R Tidyverse.
 
+## INstallation
+
+Install quarto: https://quarto.org/docs/get-started/
+(I recommend using VSCode or RStdui)
+
+Configure your python environment:
+
+Run:
+```
+pip install jupyter matplotlib plotly
+```
+
+Or 
+```
+pip install -r requirements.txt
+```
+
 ## A few definitions
 - Variable: A measurement or an attribute. Height, weight, sex, etc.
 - Value: The actual measurement or attribute. 152 cm, 80 kg, female, etc.
@@ -44,11 +61,13 @@ Through the following examples extracted from Wickham’s paper, we’ll wrangle
 ### Python pandas
 
 See:
-- pandas/column-headers-are-values-not-variable-names.py
-- pandas/multiple-tables-on-one-table.py
-- pandas/multiple-variables-stored-in-one-column.py
-- pandas/variables-are-stored-in-both-rows-and-columns.py
-- pandas/one-type-in-multiple-tables.py
+- python/1-column-headers-are-values-not-variable-names.qmd
+- python/2-multiple-tables-on-one-table.qmd
+
+WORK IN PROGRESS
+- python/multiple-variables-stored-in-one-column.py
+- python/variables-are-stored-in-both-rows-and-columns.py
+- python/one-type-in-multiple-tables.py
 
 
 ### R Tidyverse
