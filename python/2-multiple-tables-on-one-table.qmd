@@ -15,7 +15,7 @@ from os.path import isfile, join
 import glob
 import re
 print("\nOriginal billboard.csv data")
-df = pd.read_csv("./data/billboard.csv", encoding="mac_latin2")
+df = pd.read_csv("../data/billboard.csv", encoding="mac_latin2")
 print(df.head(10))
 print("\nProblem:\nThe columns headers are composed of values. If a song is in the Top 100 for less than 75 weeks, the remaining columns are filled with missing values. Multiple observational units (the song and its rank) in a single table.")
 ```
