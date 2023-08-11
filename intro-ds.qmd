@@ -1,0 +1,360 @@
+---
+title: "Python and R for Data Science"
+format: html
+editor: visual
+jupyter: python3
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction to Python
+
+### Packages, modules and directories
+
+In Python, **packages** are directories that contain multiple modules and a special \_\_init\_\_.py file. Packages provide a way to organize related modules into a hierarchical structure. They enable you to create reusable code libraries and distribute them for others to use.
+
+A **module** is a directory containing Python files that defines functions, classes, and variables. Modules are used for code organization and reusability. They allow you to logically group related code and make it accessible from other parts of your program using the import statement.
+
+We can import the os module to see the **current working directory**, can change it and then restore it.
+
+```{python}
+import os
+
+old_dir = os.getcwd()
+print(old_dir)
+
+new_dir = "/home"
+os.chdir(new_dir) 
+print(os.getcwd())
+
+os.chdir(old_dir)
+print(os.getcwd())
+```
+
+You can **get help** about a module or function using the help function.
+
+```{python}
+help(os)
+```
+
+### Environments
+
+In Python instead of using a gloval confguration of packages and modules, it's better to use specific environments for each project.
+
+Is this the first time here? Then you don't have any environment created in your project folder and this code will fail:
+
+```{python}
+import os
+print(os.environ["VIRTUAL_ENV"])
+```
+
+Run this code to create an environment inside your project folder. Then, if you use RStudio, restart it. It should automatically activate your environment the next you open it.
+
+```{python}
+!python3 -m venv .venv
+```
+
+The **Python Package Index (PyPI)** is the primary repository for Python packages, and the pip package manager is used to install and manage packages. You can install and update packages in your environment simply running:
+
+```{python}
+!pip install --upgrade pip
+!pip install pandas
+```
+
+### 
+
+Indexing in Python starts with 0. Here we build a list, we save the first element and we print it.
+
+```{python}
+my_list = [10, 20, 30, 40, 50]
+first_element = my_list[0]
+print(first_element)
+```
+
+### Data types
+
+The most **basic types** in Python are:
+
+```{python}
+type(-1)
+type(3.14)
+type(True)
+```
+
+Common **classes** are:
+
+```{python}
+type([1, 2, 3])
+type((1, 2, 3))
+type("Hello")
+type({"key": "value"})
+type({1, 2, 3})
+
+from datetime import date, datetime
+print(date.today())
+type(date.today())
+print(datetime.today())
+type(datetime.today())
+```
+
+### Lists, dictionaries and tuples
+
+When using lists and dictionaries, keep in mind they are modified "in place" and references to the same object returns the changed options. To avoid this you need to do copies.
+
+```{python}
+my_list = [1, 2, 3, 4, 5] 
+same_list = my_list
+initial_list = my_list.copy()
+fifth_element = my_list[4]
+fifth_element
+len(my_list)
+my_list.append(6)
+len(my_list)
+my_list.remove(5)
+my_list
+fifth_element = my_list[4]
+fifth_element
+print(initial_list)
+print(same_list)
+
+my_dict= {
+ "name": "Mic",
+ "species": "cat",
+ "age": 2
+}
+same_dict = my_dict
+initial__dict  = my_dict.copy()
+my_dict.pop("species") 
+my_dict["colour"] = "red"
+my_dict["name"]
+my_dict["name"] = "Mike"
+my_dict["name"]
+print(initial__dict)
+print(same_dict)
+```
+
+Tuples can't be modified, but you can generate new tuple from other tuples.
+
+```{python}
+my_tuple = (1, 2, 3)
+second_element = my_tuple[1]
+second_element
+other_tuple = ("a", "b", "c")
+what_tuple = my_tuple + other_tuple
+what_tuple
+what_tuple.count("c")
+what_tuple.index("c")
+```
+
+### Data frames
+
+To represent tabular data in Python, you can use:
+
+-   List of lists.
+
+-   Dictionaries.
+
+-   DataFrame from pandas using list of lists, dictionaries, other objects (numpy array, etc) or external sources.
+
+```{python}
+import pandas as pd
+
+list_of_lists = [
+    ["male", 10, "pclass1", True],
+    ["female", 25, "pclass3", False],
+    ["male", 36, "pclass2", False]
+]
+print(list_of_lists)
+df_list = pd.DataFrame(list_of_lists, columns = ["sex", "age", "pclass", "survived"])
+print(df_list)
+
+dictionary = {
+    "sex": ["male", "female", "male"],
+    "age": [10, 25, 36],
+    "pclass": ["pclass1", "pclass3", "pclass2"],
+    "survived": [True, False, False]
+}
+print(dictionary)
+df_dict = pd.DataFrame(dictionary)
+print(df_dict)
+```
+
+Rows, columns and index operations to select the age value of the first row.
+
+```{python}
+print(f"Rows and columns: {df_list.shape}")
+
+print(list_of_lists[0][1])
+print(df_list.loc[0][1])
+
+print(dictionary["age"][0])
+print(df_dict.loc[0, "age"])
+print(df_dict.age[0])
+```
+
+You can use chained operations that copy instead of modify "in place".
+
+Add a column:
+
+```{python}
+(df_dict
+  .assign(name=['Alice', 'Bob', 'Charlie'])
+)
+```
+
+Add and remove a column:
+
+```{python}
+(df_dict
+  .assign(name=['Alice', 'Bob', 'Charlie'])
+  .drop("pclass", axis=1)
+)
+```
+
+Concatenate two pandas.DataFrame objects using the pipe method with a lambda function:
+
+```{python}
+new_rows = pd.DataFrame({
+    "sex": ["male", "female"],
+    "age": [40, 23],
+    "survived": [False, True],
+    "name": ["Alex", "Maria"]
+})
+
+(df_dict
+  .assign(name=['Alice', 'Bob', 'Charlie'])
+  .drop("pclass", axis=1)
+  .pipe(lambda df_: pd.concat([df_, new_rows], ignore_index = True))
+)
+```
+
+In this example, we use the pipe method with a custom append_row function (pandas.DataFrame.append was removed in pandas 2.0) and then we remove the first row.
+
+```{python}
+def append_row(df1, d):
+    df2 = pd.DataFrame(d, index=[0])
+    return pd.concat([df1, df2], ignore_index = True)
+
+df = pd.DataFrame(columns=['a', 'b'])
+(df
+    .pipe(append_row, {'a': 1, 'b': 2 })
+    .pipe(append_row, {'a': 3, 'b': 4 })
+    .drop(0)
+)
+```
+
+## Pandas
+
+We import the data from a URL containing a .csv file and saved it inside the local data directory for local reading in the future.
+
+```{python}
+import os
+import pandas as pd
+
+def fetch_csv_data(url, file_name=None, directory="data"):
+    if file_name is None:
+        file_name = url.split("/")[-1]
+        
+    file_path = os.path.join(directory, file_name)
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    if not os.path.isfile(file_path):
+        data = pd.read_csv(url)
+        data.to_csv(file_path, index=False)
+
+    return pd.read_csv(file_path)
+
+income = fetch_csv_data('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-10/tuition_income.csv')
+income
+income_dict = income.to_dict()
+```
+
+Select the columns:
+
+```{python}
+(income[["name", "total_price", "year"]]
+)
+```
+
+Get the mean for all the data:
+
+```{python}
+(income[["name", "total_price", "year"]]
+    .agg({"total_price": "mean"})
+)
+```
+
+We get a MultiIndex when we try to get the mean for a group of multiple columns:
+
+```{python}
+(income[["name", "total_price", "year"]]
+    .groupby(["name", "year"])
+    .agg({"total_price": "mean"})
+    .index
+)
+```
+
+If we reset the index we can sort them and check the avg_per_year results:
+
+```{python}
+df = (income
+    .groupby(["name", "year"])
+    .agg(avg_per_year=("total_price": "mean")
+    .sort_values("avg_per_year", ascending = False)
+)
+temp_py = df.copy()
+temp_py
+```
+
+To compute the difference for each consecutive year, we start getting the counts:
+
+```{python}
+(temp_py
+    .assign(
+        count = lambda x: x.groupby("name")["name"].transform("count"),
+    )
+    [["count"]]
+)
+```
+
+Now we can compute differences using np.diff and exclude not increasing diferences
+
+```{python}
+(temp_py
+    .assign(
+        count = lambda x: x.groupby("name")["name"].transform("count"),
+        difference = lambda x: x.groupby("name")["avg_per_year"].transform(lambda x: np.append(np.nan, np.diff(x)))
+    )
+    .query("(difference >= 0) or difference != difference")
+)
+```
+
+Only those with consistent increase tuition income over the years.
+
+```{python}
+(temp_py
+    .assign(
+        count = lambda x: x.groupby("name")["name"].transform("count"),
+        difference = lambda x: x.groupby("name")["avg_per_year"].transform(lambda x: np.append(np.nan, np.diff(x)))
+    )
+    .query("(difference >= 0) or difference != difference")
+    .assign(count_2 = lambda x: x.groupby("name")["name"].transform("count"))
+    .query("(count_2 == count)"))
+)
+```
+
+```{R}
+library(tidyverse)
+library(reticulate)
+income <- py$income_dict %>% as_tibble() %>% unnest(everything())
+income
+```
+
+```{R}
+income %>% 
+    summarize(avg_per_year = mean(total_price), .by = c(name, year)) %>% 
+    arrange(desc(avg_per_year))
+```
+
